@@ -1,9 +1,10 @@
 import knex from "knex";
+import { env } from "./env/index.js";
 
 export const config = {
   client: "better-sqlite3",
   connection: {
-    filename: "./tmp/database/data.db",
+    filename: env.DATABASE_URL
   },
   useNullAsDefault: true,
 };

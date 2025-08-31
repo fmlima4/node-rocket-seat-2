@@ -5,7 +5,7 @@ const app = fastify();
 
 app.get('/hello', async () => {
 
-  const tables = await database('sqlite_master')
+  const tables = await database('sqlite_schema')
   .select('name')
   .where('type', 'table');
 
