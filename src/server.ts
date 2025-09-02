@@ -1,19 +1,11 @@
 import fastify from 'fastify'
-import { database } from './database.js';
+import { transactionsRoutes } from './routes/transactions.js';
 
 const app = fastify();
 
-app.get('/hello', async () => {
-
-  const tables = await database('sqlite_schema')
-  .select('name')
-  .where('type', 'table');
-
-  console.log(tables);  
-
-
-  return 'Hello World';
-});
+app.register(transactionsRoutes, {
+  prefix: 'transactions'
+})
 
 app
   .listen({
