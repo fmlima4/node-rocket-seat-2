@@ -2,25 +2,34 @@ import type { FastifyInstance } from "fastify";
 import z from "zod";
 import { database } from "../database.js";
 import { randomUUID } from "node:crypto";
+import { checkSessionIdExists } from "../middlewares/check-session-id.js";
 
 export async function transactionsRoutes(app: FastifyInstance) {
+    app.addHook('preHandler', checkSessionIdExists) // all routes will be checked for session id
+
     app.get('/', async (request, reply) => {
-        const transactions = await database('transactions').select()
+        const sessionId = request.cookies.sessionId
+
+        const transactions = await database('transactions').select().where('session_id', sessionId)
         return reply.status(200).send({transactions})
     })
 
     app.get('/:id', async (request, reply) => {
+        const sessionId = request.cookies.sessionId
+
         const getTransactionParamsSchema = z.object({
             id: z.string()
         })
 
         const { id } = getTransactionParamsSchema.parse(request.params)
-        const transaction = await database('transactions').where('id', id).first()
+        const transaction = await database('transactions').where('id', id).where('session_id', sessionId).first()
         return reply.status(200).send(transaction)
     })
 
     app.get('/summary', async (request, reply) => {
-        const summary = await database('transactions').sum('amount', { as: 'amount' }).where('type', 'credit').first()
+        const sessionId = request.cookies.sessionId
+
+        const summary = await database('transactions').sum('amount', { as: 'amount' }).where('type', 'credit').where('session_id', sessionId).first()
         return reply.status(200).send({summary})
     })
 
