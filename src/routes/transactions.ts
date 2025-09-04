@@ -5,7 +5,7 @@ import { randomUUID } from "node:crypto";
 import { checkSessionIdExists } from "../middlewares/check-session-id.js";
 
 export async function transactionsRoutes(app: FastifyInstance) {
-    app.addHook('preHandler', checkSessionIdExists) // all routes will be checked for session id
+    //app.addHook('preHandler', checkSessionIdExists) // all routes will be checked for session id
 
     app.get('/', async (request, reply) => {
         const sessionId = request.cookies.sessionId
