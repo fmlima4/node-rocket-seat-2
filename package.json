@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc",
+    "build": "tsup src",
     "start": "node dist/server.js",
     "lint": "eslint . --ext .ts",
     "knex": "node --no-warnings --import tsx ./node_modules/.bin/knex",
@@ -21,6 +21,7 @@
     "@types/supertest": "^6.0.3",
     "eslint": "^9.34.0",
     "supertest": "^7.1.4",
+    "tsup": "^8.5.0",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
